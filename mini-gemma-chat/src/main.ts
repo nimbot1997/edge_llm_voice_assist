@@ -18,8 +18,41 @@ class MiniGemmaChat {
     initTheme();
     await this.loadMessages();
     this.render();
-    await this.initLLM();
+    await this.initDownloader();
     this.setupEventListeners();
+  }
+
+  private async initDownloader() {
+    const downloaderContainer = document.createElement('div');
+    downloaderContainer.id = 'downloader-container';
+    document.body.appendChild(downloaderContainer);
+
+    const { Downloader } = await import('./components/Downloader');
+    const { downloadModel } = await import('./lib/downloader');
+
+    const downloader = new Downloader(downloaderContainer);
+
+    // Check if model is already cached
+    const { isModelCached } = await import('./lib/downloader');
+    const cached = await isModelCached();
+
+    if (!cached) {
+      downloader.render();
+
+      try {
+        await downloadModel((progress) => {
+          downloader.updateProgress(progress.percentage, progress.loaded, progress.total);
+        });
+
+        downloader.hide();
+      } catch (error) {
+        console.error('Failed to download model:', error);
+        alert('Failed to download AI model. Please check your internet connection and refresh the page.');
+      }
+    }
+
+    // Initialize LLM after ensuring model is available
+    await this.initLLM();
   }
 
   private async loadMessages() {
@@ -46,7 +79,7 @@ class MiniGemmaChat {
     return `
       <header class="navbar bg-base-100 border-b border-base-300">
         <div class="flex-1">
-          <h1 class="text-xl font-bold">Mini-Gemma Chat</h1>
+          <h1 class="text-xl font-bold">SmolLM Chat</h1>
         </div>
         <div class="flex-none gap-2">
           <button
@@ -90,7 +123,7 @@ class MiniGemmaChat {
           </div>
         </div>
         <div class="chat-header">
-          ${msg.role === 'user' ? 'You' : 'Gemma'}
+          ${msg.role === 'user' ? 'You' : 'SmolLM'}
         </div>
         <div class="chat-bubble ${msg.role === 'user' ? 'chat-bubble-primary' : 'chat-bubble'}">
           <div class="prose prose-sm max-w-none">
@@ -150,9 +183,9 @@ class MiniGemmaChat {
     // Delete all
     const deleteAll = document.getElementById('delete-all');
     deleteAll?.addEventListener('click', async () => {
-      if (confirm('Are you sure you want to delete all chat history? This cannot be undone.')) {
-        const { clearMessages } = await import('./lib/storage');
-        await clearMessages();
+      if (confirm('Are you sure you want to delete all chat history and model cache? This cannot be undone.')) {
+        const { clearAllData } = await import('./lib/storage');
+        await clearAllData();
         window.location.reload();
       }
     });

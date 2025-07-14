@@ -3,17 +3,20 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: './',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,task}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // Exclude model files from service worker caching
+        globIgnores: ['**/*.task', '**/*.onnx']
       },
-      includeAssets: ['models/*.task'],
+      includeAssets: ['**/*.{ico,png,svg}'],
       manifest: {
-        name: 'Mini-Gemma Chat',
-        short_name: 'GemmaChat',
-        description: 'Privacy-first AI chat running Gemma-2B entirely in your browser',
+        name: 'SmolLM Chat',
+        short_name: 'SmolLMChat',
+        description: 'Privacy-first AI chat running SmolLM-360M entirely in your browser',
         theme_color: '#ffffff',
         icons: [
           {

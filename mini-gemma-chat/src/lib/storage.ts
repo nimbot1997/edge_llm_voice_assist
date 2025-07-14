@@ -32,6 +32,13 @@ export async function clearMessages(): Promise<void> {
   await messagesStore.clear();
 }
 
+export async function clearAllData(): Promise<void> {
+  await messagesStore.clear();
+  // Also clear model cache
+  const { clearModelCache } = await import('./downloader');
+  await clearModelCache();
+}
+
 export async function exportMessages(): Promise<string> {
   const messages = await getMessages();
   return JSON.stringify(messages, null, 2);
