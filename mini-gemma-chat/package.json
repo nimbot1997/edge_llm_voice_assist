@@ -7,17 +7,22 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview --host",
-    "analyze": "npm run build && npx rollup-plugin-visualizer"
+    "analyze": "npm run build && npx rollup-plugin-visualizer",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "devDependencies": {
     "@types/marked": "^6.0.0",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.10",
+    "jsdom": "^26.1.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",
-    "vite-plugin-pwa": "^0.20.0"
+    "vite-plugin-pwa": "^0.20.0",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "@mediapipe/tasks-genai": "^0.10.14",
