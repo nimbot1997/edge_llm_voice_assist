@@ -28,31 +28,20 @@ class MiniGemmaChat {
     document.body.appendChild(downloaderContainer);
 
     const { Downloader } = await import('./components/Downloader');
-    const { downloadModel } = await import('./lib/downloader');
-
     const downloader = new Downloader(downloaderContainer);
 
-    // Check if model is already cached
-    const { isModelCached } = await import('./lib/downloader');
-    const cached = await isModelCached();
+    // Show loading indicator
+    downloader.render();
+    downloader.updateProgress(0, 0, 100);
 
-    if (!cached) {
-      downloader.render();
-
-      try {
-        await downloadModel((progress) => {
-          downloader.updateProgress(progress.percentage, progress.loaded, progress.total);
-        });
-
-        downloader.hide();
-      } catch (error) {
-        console.error('Failed to download model:', error);
-        alert('Failed to download AI model. Please check your internet connection and refresh the page.');
-      }
+    try {
+      // Initialize LLM directly with Transformers.js
+      await this.initLLM();
+      downloader.hide();
+    } catch (error) {
+      console.error('Failed to initialize model:', error);
+      alert('Failed to load AI model. Please check your internet connection and refresh the page.');
     }
-
-    // Initialize LLM after ensuring model is available
-    await this.initLLM();
   }
 
   private async loadMessages() {
