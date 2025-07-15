@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Loading Debug</title>
+</head>
+<body>
+    <h1>Model Loading Debug</h1>
+    <div id="output"></div>
+    <script type="module">
+        const output = document.getElementById('output');
+
+        function log(message) {
+            console.log(message);
+            output.innerHTML += `<p>${message}</p>`;
+        }
+
+        async function testModelLoading() {
+            try {
+                log('Testing model URL accessibility...');
+
+                // Test model download
+                const modelResponse = await fetch('https://huggingface.co/allama-ai/SmolLM-360M-Instruct-onnx-int4/resolve/main/model.onnx');
+                log(`Model fetch status: ${modelResponse.status} ${modelResponse.statusText}`);
+
+                // Test WASM loading
+                const wasmResponse = await fetch('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.14/wasm/genai_wasm_internal.wasm');
+                log(`WASM fetch status: ${wasmResponse.status} ${wasmResponse.statusText}`);
+
+                // Test MediaPipe import
+                log('Testing MediaPipe import...');
+                const { FilesetResolver } = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.14/wasm/genai_wasm_internal.js');
+                log('MediaPipe imported successfully');
+
+                // Test FilesetResolver
+                log('Testing FilesetResolver...');
+                const genai = await FilesetResolver.forGenAiTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.14/wasm'
+                );
+                log('FilesetResolver created successfully');
+
+            } catch (error) {
+                log(`Error: ${error.message}`);
+                console.error(error);
+            }
+        }
+
+        testModelLoading();
+    </script>
+</body>
+</html>
