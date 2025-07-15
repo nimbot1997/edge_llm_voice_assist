@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Loading Debug</title>
+</head>
+<body>
+    <h1>Model Loading Debug</h1>
+    <div id="output"></div>
+    <script type="module">
+        const output = document.getElementById('output');
+
+        function log(message) {
+            output.innerHTML += `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            console.log(message);
+        }
+
+        async function testModelLoading() {
+            try {
+                log('Testing model loading...');
+
+                // Test 1: Check if we can fetch the model
+                log('Testing fetch from Hugging Face...');
+                const response = await fetch('https://huggingface.co/allama-ai/SmolLM-360M-Instruct-onnx-int4/resolve/main/model.onnx');
+                log(`Response status: ${response.status}`);
+                log(`Response ok: ${response.ok}`);
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    log(`Model size: ${blob.size} bytes`);
+                }
+
+                // Test 2: Check if MediaPipe is available
+                log('Testing MediaPipe availability...');
+                const { FilesetResolver, LlmInference } = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.23/genai_bundle.mjs');
+                log('MediaPipe tasks-genai loaded successfully');
+
+                // Test 3: Check if we can create LLM inference
+                const genai = await FilesetResolver.forGenAiTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.23/wasm'
+                );
+                log('FilesetResolver created successfully');
+
+            } catch (error) {
+                log(`Error: ${error.message}`);
+                console.error(error);
+            }
+        }
+
+        testModelLoading();
+    </script>
+</body>
+</html>

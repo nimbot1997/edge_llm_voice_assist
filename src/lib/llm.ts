@@ -8,7 +8,7 @@ export let llm: LlmInference | null = null;
 
 export async function initLLM() {
   const genai = await FilesetResolver.forGenAiTasks(
-    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@latest/wasm'
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@0.10.23/wasm'
   );
 
   // Get model from IndexedDB cache or download it
