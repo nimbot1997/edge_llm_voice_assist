@@ -2,7 +2,7 @@
 import localforage from 'localforage';
 
 const MODEL_URL = 'https://huggingface.co/allama-ai/SmolLM-360M-Instruct-onnx-int4/resolve/main/model.onnx';
-const MODEL_KEY = 'smollm-360m-it-int4';
+const MODEL_KEY = 'smollm-360m-instruct-onnx-int4';
 const MODEL_STORE_NAME = 'models';
 
 interface DownloadProgress {
