@@ -1,9 +1,9 @@
 
 
 {
-  "name": "Mini-Gemma Chat",
-  "short_name": "GemmaChat",
-  "description": "Privacy-first AI chat running Gemma-2B entirely in your browser",
+  "name": "SmolLM Chat",
+  "short_name": "SmolLMChat",
+  "description": "Privacy-first AI chat running SmolLM-360M entirely in your browser",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
