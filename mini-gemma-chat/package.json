@@ -1,7 +1,7 @@
 {
-  "name": "mini-gemma-chat",
+  "name": "smolllm-chat",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0-smollm",
   "type": "module",
   "scripts": {
     "dev": "vite --host",

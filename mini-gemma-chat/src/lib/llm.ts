@@ -2,6 +2,7 @@
 
 
 import { FilesetResolver, LlmInference } from '@mediapipe/tasks-genai';
+import { getModelBlob } from './downloader';
 
 export let llm: LlmInference | null = null;
 
@@ -10,14 +11,21 @@ export async function initLLM() {
     'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@latest/wasm'
   );
 
+  // Get model from IndexedDB cache or download it
+  const modelBlob = await getModelBlob();
+  const modelUrl = URL.createObjectURL(new Blob([modelBlob]));
+
   llm = await LlmInference.createFromOptions(genai, {
     baseOptions: {
-      modelAssetPath: '/models/gemma-2b-it-gpu-int4.task'
+      modelAssetPath: modelUrl
     },
     maxTokens: 1024,
     topK: 40,
     temperature: 0.7,
   });
+
+  // Clean up the blob URL after initialization
+  URL.revokeObjectURL(modelUrl);
 }
 
 export async function* stream(prompt: string) {

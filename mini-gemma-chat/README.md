@@ -1,8 +1,8 @@
 
 
-# Mini-Gemma Chat
+# SmolLM Chat
 
-A privacy-first, zero-server AI chat webapp that runs **Gemma-2B-int4** entirely in your browser using **WebGPU** and **MediaPipe**.
+A privacy-first, zero-server AI chat webapp that runs **SmolLM-360M-int4** entirely in your browser using **WebGPU** and **MediaPipe**.
 
 ## Features
 
@@ -18,7 +18,7 @@ A privacy-first, zero-server AI chat webapp that runs **Gemma-2B-int4** entirely
 
 - Chrome 113+ or Edge 113+ (for WebGPU support)
 - HTTPS (required for WebGPU)
-- ~1GB free storage for the model
+- ~250MB free storage for the model
 
 ## Quick Start
 
@@ -27,16 +27,16 @@ A privacy-first, zero-server AI chat webapp that runs **Gemma-2B-int4** entirely
    npm install
    ```
 
-2. **Download the model**:
-   - Download `gemma-2b-it-gpu-int4.task` from [MediaPipe releases](https://github.com/google/mediapipe/releases)
-   - Place it in `public/models/`
+2. **Deploy to Vercel**:
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/smolllm-chat)
 
-3. **Start development server**:
+   Or run locally:
    ```bash
+   npm install
    npm run dev
    ```
 
-4. **Open in browser**:
+3. **Open in browser**:
    - Navigate to `https://localhost:5173` (or the URL shown in terminal)
 
 ## Build for Production
@@ -49,30 +49,30 @@ The built files will be in the `dist/` directory.
 
 ## Usage
 
-1. **First run**: The model will download (~1GB) and initialize
+1. **First run**: The model will download (~230MB) and initialize
 2. **Chat**: Type your message and press Enter or click send
 3. **Theme**: Click the sun/moon icon to toggle between light and dark modes
-4. **Delete data**: Click the trash icon to clear all chat history
+4. **Delete data**: Click the trash icon to clear all chat history and model cache
 5. **Offline**: After first load, the app works offline
 
 ## Performance
 
-- **Model load time**: < 30s on 4G, < 5s on repeat visits
-- **Token generation**: < 400ms/token on Pixel 8
+- **Model load time**: < 15s on 4G, < 500ms on repeat visits
+- **Token generation**: < 250ms/token on Pixel 8
 - **Bundle size**: ≤ 120 kB gzipped (UI only)
 
 ## Development
 
 ### Project Structure
 ```
-mini-gemma-chat/
+smolllm-chat/
 ├── src/
 │   ├── components/     # UI components
 │   ├── lib/           # Core functionality
 │   ├── styles/        # CSS styles
 │   └── main.ts        # App entry point
 ├── public/
-│   └── models/        # Model files
+│   └── models/        # Model files (optional - now downloaded on-demand)
 └── dist/              # Built files
 ```
 
@@ -113,7 +113,7 @@ MIT License - see LICENSE file for details
 - Close other GPU-intensive applications
 
 ### Storage issues
-- Ensure ~1GB free space for model
+- Ensure ~250MB free space for model
 - Check browser storage permissions
 - Clear browser cache if needed
 
